@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DWA SURESHOT PREDICTOR | Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --dark: #0f172a;
+      --dark-light: #1e293b;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --success: #10b981;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --telegram: #0088cc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: var(--light);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Login Page Styles */
+    .login-container {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .login-container.hidden {
+      display: none;
+    }
+
+    .login-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-logo h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      background: linear-gradient(to right, #3b82f6, #10b981);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .login-logo p {
+      color: var(--gray);
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group label {
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background: var(--dark);
+      padding: 0 10px;
+      color: var(--primary-light);
+      font-size: 0.8rem;
+      z-index: 1;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--light);
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      background: rgba(30, 41, 59, 0.9);
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.6);
+    }
+
+    .login-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Main Dashboard Styles */
+    .dashboard-container {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      position: relative;
+      overflow: hidden;
+      display: none;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .dashboard-container.active {
+      display: block;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .dashboard-title {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .dashboard-title h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      background: linear-gradient(to right, #3b82f6, #10b981);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .dashboard-title p {
+      color: var(--gray);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--danger);
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .input-group label {
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background: var(--dark);
+      padding: 0 10px;
+      color: var(--primary-light);
+      font-size: 0.8rem;
+      z-index: 1;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--light);
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      background: rgba(30, 41, 59, 0.9);
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .result-display {
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+      padding: 20px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .result-display::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .main-number {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+      margin: 10px 0;
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      display: inline-block;
+    }
+
+    .main-number::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .prediction-type {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.1));
+      color: var(--primary-light);
+      display: inline-block;
+      padding: 10px 25px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      margin-top: 15px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .suggested {
+      text-align: center;
+      font-size: 1rem;
+      color: var(--light);
+      margin: 25px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .suggested-title {
+      width: 100%;
+      margin-bottom: 10px;
+      color: var(--primary-light);
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .number-badge {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+      border: 2px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .small {
+      color: var(--success);
+    }
+
+    .big {
+      color: var(--warning);
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+      z-index: -1;
+    }
+
+    .btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .btn-random {
+      background: linear-gradient(135deg, var(--warning), #f97316);
+      color: white;
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+    }
+
+    .btn-sureshot {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+    }
+    
+    .btn-support {
+      background: linear-gradient(135deg, var(--telegram), #006699);
+      color: white;
+      box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .history {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      color: var(--primary-light);
+    }
+
+    .history-header h3 {
+      font-size: 1.1rem;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .clear-history {
+      background: transparent;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .clear-history:hover {
+      opacity: 1;
+      color: var(--primary-light);
+    }
+
+    .history-list {
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    /* Scrollbar styling */
+    .history-list::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .history-list::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 10px;
+    }
+
+    .history-list::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    .history-item {
+      background: rgba(30, 41, 59, 0.8);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      border-left: 3px solid var(--primary);
+      transition: transform 0.3s ease;
+    }
+
+    .history-item:hover {
+      transform: translateX(5px);
+    }
+
+    .history-details {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .period {
+      font-weight: 500;
+      color: var(--gray);
+      font-size: 0.8rem;
+    }
+
+    .prediction {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--primary-light);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .type {
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+    }
+
+    .type-big {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+
+    .type-small {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+
+    .watermark {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      color: rgba(59, 130, 246, 0.3);
+      font-size: 0.7rem;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    /* Admin Panel Styles */
+    .admin-panel {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      display: none;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .admin-panel.active {
+      display: block;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .admin-title {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .admin-title h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      background: linear-gradient(to right, #3b82f6, #10b981);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .admin-title p {
+      color: var(--gray);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .admin-back-btn {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: var(--primary-light);
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .admin-back-btn:hover {
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .admin-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .keys-list {
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .key-item {
+      background: rgba(30, 41, 59, 0.8);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      border-left: 3px solid var(--primary);
+    }
+
+    .key-value {
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--light);
+    }
+
+    .key-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .key-btn {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .key-btn.copy {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--primary-light);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .key-btn.copy:hover {
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .key-btn.delete {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .key-btn.delete:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .add-key-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .add-key-input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--light);
+      font-size: 0.9rem;
+    }
+
+    .add-key-btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .add-key-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .admin-message {
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-top: 20px;
+    }
+
+    /* Admin Password Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      display: none;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .modal-header {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .modal-header h3 {
+      color: var(--primary-light);
+      font-size: 1.3rem;
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .modal-btn.cancel {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .modal-btn.submit {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+
+    .new-prediction {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 500px) {
+      .login-container, .dashboard-container, .admin-panel {
+        padding: 25px 20px;
+        border-radius: 14px;
+      }
+      
+      .dashboard-title h1, .admin-title h1 {
+        font-size: 1.5rem;
+      }
+      
+      .main-number {
+        font-size: 3rem;
+      }
+      
+      .btn {
+        padding: 14px;
+      }
+      
+      .add-key-form {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-logo">
+      <h1>DWA SURESHOT PREDICTOR</h1>
+      <p>Premium Dashboard</p>
+    </div>
+
+    <form class="login-form" id="loginForm">
+      <div class="form-group">
+        <label for="password">ENTER ACCESS KEY</label>
+        <input type="password" id="password" placeholder="Enter your access key" required />
+      </div>
+      <button type="submit" class="login-btn">
+        <i class="fas fa-lock"></i> LOGIN
+      </button>
+    </form>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div class="dashboard-container" id="dashboardContainer">
+    <div class="dashboard-header">
+      <div class="dashboard-title">
+        <h1>DWA SURESHOT PREDICTOR</h1>
+        <p>Premium Dashboard</p>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> LOGOUT
+      </button>
+    </div>
+
+    <div class="input-group">
+      <label for="period">PERIOD NUMBER</label>
+      <input type="text" id="period" maxlength="3" placeholder="Enter 3-digit number" />
+    </div>
+
+    <div class="result-display">
+      <div class="main-number" id="mainNum">---</div>
+      <div class="prediction-type" id="mainType">---</div>
+    </div>
+
+    <div class="suggested">
+      <div class="suggested-title">SUGGESTED NUMBERS</div>
+      <div class="number-badge">
+        <span class="small" id="smallNum">-</span>
+      </div>
+      <div class="number-badge">
+        <span class="big" id="bigNum">-</span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-random" onclick="generateRandom()">
+        <i class="fas fa-random"></i> RANDOM PREDICTION
+      </button>
+      <button class="btn btn-sureshot" onclick="generateSureshot()">
+        <i class="fas fa-bullseye"></i> SURESHOT PREDICTION
+      </button>
+      <button class="btn btn-support" onclick="showSupport()">
+        <i class="fas fa-headset"></i> SUPPORT
+      </button>
+    </div>
+
+    <div class="history">
+      <div class="history-header">
+        <h3><i class="fas fa-history"></i> PREDICTION HISTORY</h3>
+        <button class="clear-history" onclick="clearHistory()">
+          <i class="fas fa-trash-alt"></i> CLEAR
+        </button>
+      </div>
+      <div class="history-list" id="historyList">
+        <!-- History items will be added here dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-header">
+      <div class="admin-title">
+        <h1>ADMIN PANEL</h1>
+        <p>Access Key Management</p>
+      </div>
+      <button class="admin-back-btn" onclick="backToLogin()">
+        <i class="fas fa-arrow-left"></i> BACK
+      </button>
+    </div>
+
+    <div class="admin-content">
+      <h3><i class="fas fa-key"></i> Valid Access Keys</h3>
+      <div class="keys-list" id="keysList">
+        <!-- Keys will be listed here -->
+      </div>
+
+      <div class="add-key-form">
+        <input type="text" class="add-key-input" id="newKeyInput" placeholder="Enter new access key" />
+        <button class="add-key-btn" onclick="addNewKey()">Add Key</button>
+      </div>
+
+      <p class="admin-message">Manage all valid access keys for the predictor system</p>
+    </div>
+  </div>
+
+  <!-- Admin Password Modal -->
+  <div class="modal-overlay" id="adminPasswordModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-lock"></i> ADMIN ACCESS</h3>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="adminPassword">ENTER ADMIN PASSWORD</label>
+          <input type="password" id="adminPassword" placeholder="Enter admin password" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel" onclick="hideAdminPasswordModal()">CANCEL</button>
+        <button class="modal-btn submit" onclick="checkAdminPassword()">SUBMIT</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="watermark">DWA SURESHOT PREDICTOR v1.0</div>
+
+  <script>
+    // DOM Elements
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboardContainer = document.getElementById('dashboardContainer');
+    const adminPanel = document.getElementById('adminPanel');
+    const loginForm = document.getElementById('loginForm');
+    const passwordInput = document.getElementById('password');
+    const periodInput = document.getElementById('period');
+    const mainNum = document.getElementById('mainNum');
+    const mainType = document.getElementById('mainType');
+    const smallNum = document.getElementById('smallNum');
+    const bigNum = document.getElementById('bigNum');
+    const historyList = document.getElementById('historyList');
+    const keysList = document.getElementById('keysList');
+    const newKeyInput = document.getElementById('newKeyInput');
+    const adminPasswordModal = document.getElementById('adminPasswordModal');
+    const adminPasswordInput = document.getElementById('adminPassword');
+
+    // Admin password
+    const ADMIN_PASSWORD = "HARSH@DWA";
+
+    // Valid keys (initially empty, will be loaded from localStorage)
+    let validKeys = [];
+
+    // Prediction history
+    let predictionHistory = [];
+
+    // Initialize the app
+    function initApp() {
+      // Check URL hash for admin access
+      if (window.location.hash === '#admin') {
+        showAdminPasswordModal();
+      }
+
+      // Load valid keys from localStorage
+      const storedKeys = localStorage.getItem('dwaValidKeys');
+      if (storedKeys) {
+        validKeys = JSON.parse(storedKeys);
+        renderKeysList();
+      } else {
+        // Default keys if none exist
+        validKeys = ['1234', 'admin123', 'dwa2023'];
+        saveKeys();
+      }
+
+      // Load prediction history
+      const storedHistory = localStorage.getItem('dwaPredictionHistory');
+      if (storedHistory) {
+        predictionHistory = JSON.parse(storedHistory);
+        renderHistory();
+      }
+
+      // Check if already logged in
+      if (localStorage.getItem('dwaLoggedIn') === 'true') {
+        loginContainer.classList.add('hidden');
+        dashboardContainer.classList.add('active');
+      }
+    }
+
+    // Login function
+    function login(event) {
+      event.preventDefault(); // Prevent form submission refresh
+      
+      const enteredKey = passwordInput.value.trim();
+      
+      if (validKeys.includes(enteredKey)) {
+        // Successful login
+        loginContainer.classList.add('hidden');
+        dashboardContainer.classList.add('active');
+        
+        // Store login state
+        localStorage.setItem('dwaLoggedIn', 'true');
+      } else {
+        // Failed login
+        alert('Invalid access key! Please try again.');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('dwaLoggedIn');
+      dashboardContainer.classList.remove('active');
+      adminPanel.classList.remove('active');
+      loginContainer.classList.remove('hidden');
+      passwordInput.value = '';
+    }
+
+    // Show admin password modal
+    function showAdminPasswordModal() {
+      adminPasswordModal.classList.add('active');
+    }
+
+    // Hide admin password modal
+    function hideAdminPasswordModal() {
+      adminPasswordModal.classList.remove('active');
+      adminPasswordInput.value = '';
+      window.location.hash = '';
+    }
+
+    // Check admin password
+    function checkAdminPassword() {
+      const enteredPassword = adminPasswordInput.value.trim();
+      
+      if (enteredPassword === ADMIN_PASSWORD) {
+        hideAdminPasswordModal();
+        loginContainer.classList.add('hidden');
+        adminPanel.classList.add('active');
+      } else {
+        alert('Incorrect admin password!');
+        adminPasswordInput.value = '';
+        adminPasswordInput.focus();
+      }
+    }
+
+    // Back to login from admin panel
+    function backToLogin() {
+      adminPanel.classList.remove('active');
+      loginContainer.classList.remove('hidden');
+      passwordInput.value = '';
+    }
+
+    // Generate random prediction
+    function generateRandom() {
+      if (!periodInput.value || periodInput.value.length !== 3) {
+        alert('Please enter a valid 3-digit period number');
+        return;
+      }
+
+      const period = periodInput.value;
+      const randomNum = Math.floor(Math.random() * 10);
+      const predictionType = Math.random() > 0.5 ? 'BIG' : 'SMALL';
+      
+      displayPrediction(period, randomNum, predictionType);
+    }
+
+    // Generate sureshot prediction
+    function generateSureshot() {
+      if (!periodInput.value || periodInput.value.length !== 3) {
+        alert('Please enter a valid 3-digit period number');
+        return;
+      }
+
+      const period = periodInput.value;
+      // This is a mock "sureshot" algorithm - replace with your actual logic
+      const lastDigit = parseInt(period.slice(-1));
+      let predictionNum, predictionType;
+      
+      if (lastDigit < 5) {
+        predictionNum = (lastDigit + 5) % 10;
+        predictionType = 'SMALL';
+      } else {
+        predictionNum = (lastDigit + 2) % 10;
+        predictionType = 'BIG';
+      }
+      
+      displayPrediction(period, predictionNum, predictionType);
+    }
+
+    // Display the prediction
+    function displayPrediction(period, num, type) {
+      mainNum.textContent = num;
+      mainType.textContent = type;
+      
+      // Set suggested numbers (mock logic)
+      smallNum.textContent = (num + 1) % 10;
+      bigNum.textContent = (num + 2) % 10;
+      
+      // Add to history
+      const prediction = {
+        period,
+        number: num,
+        type,
+        timestamp: new Date().toLocaleString()
+      };
+      
+      predictionHistory.unshift(prediction);
+      if (predictionHistory.length > 10) {
+        predictionHistory.pop();
+      }
+      
+      saveHistory();
+      renderHistory();
+    }
+
+    // Show support information
+    function showSupport() {
+      alert('For support, please contact us at:\n\nEmail: support@dwa.com\nTelegram: @dwasupport');
+    }
+
+    // Clear history
+    function clearHistory() {
+      if (confirm('Are you sure you want to clear all prediction history?')) {
+        predictionHistory = [];
+        saveHistory();
+        renderHistory();
+      }
+    }
+
+    // Save history to localStorage
+    function saveHistory() {
+      localStorage.setItem('dwaPredictionHistory', JSON.stringify(predictionHistory));
+    }
+
+    // Render history list
+    function renderHistory() {
+      historyList.innerHTML = '';
+      
+      if (predictionHistory.length === 0) {
+        historyList.innerHTML = '<p style="text-align: center; color: var(--gray);">No prediction history yet</p>';
+        return;
+      }
+      
+      predictionHistory.forEach(prediction => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item new-prediction';
+        
+        historyItem.innerHTML = `
+          <div class="history-details">
+            <span class="period">Period: ${prediction.period} • ${prediction.timestamp}</span>
+            <span class="prediction">Prediction: ${prediction.number}</span>
+          </div>
+          <span class="type type-${prediction.type.toLowerCase()}">${prediction.type}</span>
+        `;
+        
+        historyList.appendChild(historyItem);
+      });
+    }
+
+    // Save keys to localStorage
+    function saveKeys() {
+      localStorage.setItem('dwaValidKeys', JSON.stringify(validKeys));
+    }
+
+    // Render keys list
+    function renderKeysList() {
+      keysList.innerHTML = '';
+      
+      validKeys.forEach(key => {
+        const keyItem = document.createElement('div');
+        keyItem.className = 'key-item';
+        
+        keyItem.innerHTML = `
+          <span class="key-value">${key}</span>
+          <div class="key-actions">
+            <button class="key-btn copy" onclick="copyKey('${key}')">Copy</button>
+            <button class="key-btn delete" onclick="deleteKey('${key}')">Delete</button>
+          </div>
+        `;
+        
+        keysList.appendChild(keyItem);
+      });
+    }
+
+    // Copy key to clipboard
+    function copyKey(key) {
+      navigator.clipboard.writeText(key);
+      alert(`Key "${key}" copied to clipboard!`);
+    }
+
+    // Delete key
+    function deleteKey(key) {
+      if (confirm(`Are you sure you want to delete key "${key}"?`)) {
+        validKeys = validKeys.filter(k => k !== key);
+        saveKeys();
+        renderKeysList();
+      }
+    }
+
+    // Add new key
+    function addNewKey() {
+      const key = newKeyInput.value.trim();
+      
+      if (!key) {
+        alert('Please enter a key');
+        return;
+      }
+      
+      if (validKeys.includes(key)) {
+        alert('This key already exists');
+        return;
+      }
+      
+      validKeys.push(key);
+      saveKeys();
+      renderKeysList();
+      newKeyInput.value = '';
+      alert(`Key "${key}" added successfully!`);
+    }
+
+    // Event listeners
+    loginForm.addEventListener('submit', login);
+    
+    // Initialize the app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
